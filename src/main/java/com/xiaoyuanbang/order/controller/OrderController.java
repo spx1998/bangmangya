@@ -107,21 +107,48 @@ public class OrderController {
      */
     @Transactional
     @PostMapping("/record/create")
-    public String createRequest(@RequestHeader("mySession")String mySession,@RequestBody String requestInfoJson){
-        try{
-            String openid=AESUtil.decrypt(mySession,AESUtil.KEY);
-            RequestInfo requestInfo =g.fromJson(requestInfoJson,RequestInfo.class);
-            int userid =userDao.getId(openid);
-            orderDao.createRequest(requestInfo.getName(),requestInfo.getDescription(),requestInfo.getFintime(),requestInfo.getSchool(),requestInfo.getType(),requestInfo.getPrice(),userid);
+    public String createRequest(@RequestHeader("mySession")String mySession,@RequestBody String requestInfoJson) {
+        try {
+            String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
+            RequestInfo requestInfo = g.fromJson(requestInfoJson, RequestInfo.class);
+            int userid = userDao.getId(openid);
+            orderDao.createRequest(requestInfo.getName(), requestInfo.getDescription(), requestInfo.getFintime(), requestInfo.getSchool(), requestInfo.getType(), requestInfo.getPrice(), userid);
             return "ok";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
+    /**
+     *获取自己发布的订单
+     */
+    @Transactional
+    @GetMapping("/record/holder/list")
+    public String getRequestAsHolder(@RequestHeader String mySession) {
+        try{
+            String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
+            int userid= userDao.getId(openid);
+            List<RequestInfo> requestInfos=orderDao.getRequestAsHolder(userid);
+            return g.toJson(requestInfos);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+    @Transactional
+    @GetMapping("/record/worker/list")
+    public String getRequestAsWorker(@RequestHeader String mySession) {
+        try{
+            String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
+            int userid= userDao.getId(openid);
+            List<RequestInfo> requestInfos=orderDao.getRequestAsWorker(userid);
+            return g.toJson(requestInfos);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
 
-
-
+    }
 
 }

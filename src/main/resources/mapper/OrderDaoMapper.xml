@@ -28,9 +28,14 @@
         select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type}
     </select>
 
-    <select id="getRequest" resultType="com.xiaoyuanbang.order.domain.RequestInfo">
+    <select id="getRequest" resultMap="RequestInfo">
         select * from request where reqid=#{reqid}
     </select>
-
+    <select id="getRequestAsHolder" parameterType="String" resultMap="RequestInfo">
+        select * from request where holder_id=#{userid}
+    </select>
+    <select id="getRequestAsWorker" parameterType="String" resultMap="RequestInfo">
+        select * from request where worker_id=#{userid}
+    </select>
 
 </mapper>
