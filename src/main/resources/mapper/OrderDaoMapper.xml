@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaoyuanbang.order.dao.OrderDao">
+    <resultMap type="com.xiaoyuanbang.order.domain.RequestInfo" id="RequestInfo">
+        <id property="reqid"  column="reqid" />
+        <result  property="name" column="name" />
+        <result property="description" column="description"/>
+        <result property="type" column="type"/>
+        <result property="price" column="price"/>
+        <result property="school" column="school"/>
+        <result property="fintime" column="fintime"/>
+        <result property="holder_id" column="holder_id"/>
+        <result property="worker_id" column="worker_id"/>
+    </resultMap>
+    <insert id="createRequest">
+        insert into request(name, description, type, price, fintime, school, holder_id)values (#{name},#{description},#{type},#{price},#{fintime},#{school},#{holder_id})
+    </insert>
+    <update id="setRequestConfirm">
+        update request set state= #{date} ,worker_id= #{userid} where reqid=#{reqid}
+    </update>
+
+    <select id="getRequestList" parameterType="String" resultMap="RequestInfo">
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state}
+    </select>
+
+    <select id="getRequestListByType"  resultMap="RequestInfo">
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type}
+    </select>
+
+    <select id="getRequest" resultType="com.xiaoyuanbang.order.domain.RequestInfo">
+        select * from request where reqid=#{reqid}
+    </select>
+
+
+</mapper>

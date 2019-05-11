@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaoyuanbang.user.dao.UserDao">
+    <resultMap type="com.xiaoyuanbang.user.domain.User" id="User">
+        <id property="id"  column="id" />
+        <result  property="username" column="username" />
+        <result property="qqid" column="qqid"/>
+        <result property="wxid" column="wxid"/>
+        <result property="phone" column="phone"/>
+        <result property="school" column="school"/>
+        <result property="openid" column="openid"/>
+    </resultMap>
+ <insert id="createNewUser" parameterType="String" >
+     insert into user(openid) values (#{openid})
+ </insert>
+    <update id="updateUserByOpenid">
+        update user set username=#{name},gender=#{gender}, state=#{state} where openid=#{openid}
+    </update>
+    <update id="bindSchool">
+        update user set school=#{school}, state=#{state} where openid=#{openid}
+    </update>
+    <update id="bindUserContact">
+        update user set qqid=#{qqid},wxid=#{wxid},phone=#{phone},state=#{state} where openid=#{openid}
+    </update>
+    <select id="hasThisUser" resultType="java.lang.String" parameterType="String">
+        select openid from user where openid=#{openid}
+    </select>
+    <select id="getUser" resultMap="User" parameterType="String" >
+        select id, username, qqid, wxid, phone, school, gender, state from user where openid=#{openid}
+    </select>
+    <select id="getSchoolByOpenid" resultType="java.lang.String">
+        select school from user where openid=#{openid}
+    </select>
+    <select id="getId" parameterType="String" resultType="int">
+        select id from user where openid=#{openid}
+    </select>
+
+</mapper>
