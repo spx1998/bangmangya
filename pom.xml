@@ -12,6 +12,7 @@
     <artifactId>xiaoyuanbang</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>xiaoyuanbang</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
 
