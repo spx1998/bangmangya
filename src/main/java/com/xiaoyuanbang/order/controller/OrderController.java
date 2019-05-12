@@ -6,12 +6,17 @@ import com.xiaoyuanbang.order.dao.OrderDao;
 import com.xiaoyuanbang.order.domain.REQUEST_CONSTANT;
 import com.xiaoyuanbang.order.domain.RequestInfo;
 import com.xiaoyuanbang.user.dao.UserDao;
+import com.xiaoyuanbang.user.domain.SafeUser;
+import com.xiaoyuanbang.user.domain.User;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RestController
@@ -23,7 +28,7 @@ public class OrderController {
     @Autowired
     UserDao userDao;
 
-    Gson g= new Gson();
+    private Gson g= new Gson();
 
     /**
      * 拉取主界面
@@ -65,7 +70,7 @@ public class OrderController {
     @Transactional
     @GetMapping("/record/detail")
     public String getRecordDetail(@RequestHeader("mySession")String mySession,
-                                  @RequestParam("reqid")String reqid){
+                                  @RequestParam("reqid")int reqid){
         try {
             //String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             //String school = userDao.getSchoolByOpenid(openid);
@@ -84,12 +89,26 @@ public class OrderController {
     @Transactional
     @PostMapping("/record/confirm")
     public String confirmRequest(@RequestHeader("mySession")String mySession,
-                                 @RequestParam("reqid") String reqid){
+                                 @RequestParam("reqid") int reqid){
+        HashMap<String,String> infoMap;
         try{
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
-
-            int userid = userDao.getId(openid);
+            User user=userDao.getUser(openid);
+            int userid;
+            if(StringUtils.isNotBlank(user.getWxid())||user.getQqid()!=0||user.getPhone()!=0){
+                userid = user.getId();
+            }else{
+                return "no contact";
+            }
             orderDao.setRequestConfirm(reqid,userid, REQUEST_CONSTANT.STATE_ACCEPT);
+            int holder_id =orderDao.getHolderId(reqid);
+            User holder = userDao.getUserById(holder_id);
+            infoMap = new HashMap<>();
+            infoMap.put("username",holder.getUsername());
+            infoMap.put("qqid", String.valueOf(holder.getQqid()));
+            infoMap.put("wxid",holder.getWxid());
+            infoMap.put("phone",String.valueOf(holder.getPhone()));
+
 
             /**
              * 还需要返回holder的联系方式 还没有写
@@ -100,7 +119,7 @@ public class OrderController {
             e.printStackTrace();
             return "error";
         }
-        return "ok";
+        return g.toJson(infoMap);
     }
     /**
      * 发布订单
@@ -111,7 +130,11 @@ public class OrderController {
         try {
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             RequestInfo requestInfo = g.fromJson(requestInfoJson, RequestInfo.class);
-            int userid = userDao.getId(openid);
+            User user=userDao.getUser(openid);
+            if(StringUtils.isBlank(user.getWxid())&&user.getQqid()==0&&user.getPhone()==0){
+                return "no contact";
+            }
+            int userid=user.getId();
             orderDao.createRequest(requestInfo.getName(), requestInfo.getDescription(), requestInfo.getFintime(), requestInfo.getSchool(), requestInfo.getType(), requestInfo.getPrice(), userid);
             return "ok";
         } catch (Exception e) {

@@ -6,35 +6,9 @@ public class SafeUser implements Serializable {
     private static final long serialVersionUID = 3461826463872116664L;
 
     private String username;
-    private String gender;
-    private String school;
-    private String mySession;
-    private String state;
-
-
-    public SafeUser(String username, String gender, String school, String decrypt, String state) {
-        this.username=username;
-        this.gender=gender;
-        this.school=school;
-        this.mySession=decrypt;
-        this.state=state;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
+    private String wxid;
+    private int qqid;
+    private int phone;
 
     public String getUsername() {
         return username;
@@ -44,20 +18,27 @@ public class SafeUser implements Serializable {
         this.username = username;
     }
 
-
-    public String getSchool() {
-        return school;
+    public String getWxid() {
+        return wxid;
     }
 
-    public void setSchool(String school) {
-        this.school = school;
+    public void setWxid(String wxid) {
+        this.wxid = wxid;
     }
 
-    public String getMySession() {
-        return mySession;
+    public int getQqid() {
+        return qqid;
     }
 
-    public void setMySession(String mySession) {
-        this.mySession = mySession;
+    public void setQqid(int qqid) {
+        this.qqid = qqid;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
     }
 }

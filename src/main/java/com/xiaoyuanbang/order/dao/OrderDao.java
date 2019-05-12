@@ -15,13 +15,16 @@ public interface OrderDao {
 
     List<RequestInfo> getRequestListByType(@Param("school") String school, @Param("type") String type,@Param("state")  String state);
 
-    RequestInfo getRequest(String reqid);
+    RequestInfo getRequest(int reqid);
 
-    void setRequestConfirm(@Param("reqid") String reqid,@Param("userid") int userid,@Param("state") String state);
+    void setRequestConfirm(@Param("reqid") int reqid, @Param("userid") int userid, @Param("state") String state);
 
     void createRequest(@Param("name") String name, @Param("description") String description, @Param("fintime") Date fintime, @Param("school") String school, @Param("type") String type, @Param("price") int price,@Param("holder_id") int userid);
 
     List<RequestInfo> getRequestAsHolder(int userid);
 
     List<RequestInfo> getRequestAsWorker(int userid);
+
+    int getHolderId(int reqid);
 }
+

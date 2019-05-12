@@ -35,5 +35,8 @@
     <select id="getId" parameterType="String" resultType="int">
         select id from user where openid=#{openid}
     </select>
+    <select id="getUserById" parameterType="int" resultMap="User">
+        select * from user where id =#{holder_id}
+    </select>
 
 </mapper>

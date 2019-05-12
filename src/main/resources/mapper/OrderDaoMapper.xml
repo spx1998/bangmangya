@@ -28,7 +28,7 @@
         select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type}
     </select>
 
-    <select id="getRequest" resultMap="RequestInfo">
+    <select id="getRequest" parameterType="int" resultMap="RequestInfo">
         select * from request where reqid=#{reqid}
     </select>
     <select id="getRequestAsHolder" parameterType="String" resultMap="RequestInfo">
@@ -36,6 +36,9 @@
     </select>
     <select id="getRequestAsWorker" parameterType="String" resultMap="RequestInfo">
         select * from request where worker_id=#{userid}
+    </select>
+    <select id="getHolderId" parameterType="int" resultType="int">
+        select holder_id from request where reqid=#{reqid}
     </select>
 
 </mapper>

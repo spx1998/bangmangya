@@ -23,4 +23,6 @@ public interface UserDao {
     String getSchoolByOpenid(String openid);
 
     int getId(String openid);
+
+    User getUserById(int holder_id);
 }
