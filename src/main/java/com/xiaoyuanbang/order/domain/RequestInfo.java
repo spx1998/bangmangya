@@ -3,20 +3,29 @@ package com.xiaoyuanbang.order.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class RequestInfo implements Serializable {
+public class RequestInfo   implements Serializable {
 
     private static final long serialVersionUID = 8769242197198044722L;
+
+    private Date fintime; //此处类型可能出错
     private int reqid;
     private String name;
     private String description;
     private String type;
     private int price;
-    private Date fintime; //此处类型可能出错
     private String state;
     private String school;
     private int holder_id;
     private int worker_id;
 
+    /*public RequestInfo(String name, String description, int price, String school, String type, Date fintime) {
+        this.setName(name);
+        this.setDescription(description);
+        this.setPrice(price);
+        this.setSchool(school);
+        this.setType(type);
+        this.setFintime(fintime);
+    }*/
     public int getReqid() {
         return reqid;
     }
@@ -57,14 +66,6 @@ public class RequestInfo implements Serializable {
         this.price = price;
     }
 
-    public Date getFintime() {
-        return fintime;
-    }
-
-    public void setFintime(Date fintime) {
-        this.fintime = fintime;
-    }
-
     public String getState() {
         return state;
     }
@@ -95,5 +96,14 @@ public class RequestInfo implements Serializable {
 
     public void setWorker_id(int work_id) {
         this.worker_id = work_id;
+    }
+
+
+    public Date getFintime() {
+        return fintime;
+    }
+
+    public void setFintime(Date fintime) {
+        this.fintime = fintime;
     }
 }

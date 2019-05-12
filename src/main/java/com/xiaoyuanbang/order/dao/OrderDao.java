@@ -1,5 +1,6 @@
 package com.xiaoyuanbang.order.dao;
 
+import com.xiaoyuanbang.order.domain.RequestChao;
 import com.xiaoyuanbang.order.domain.RequestInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -26,5 +27,7 @@ public interface OrderDao {
     List<RequestInfo> getRequestAsWorker(int userid);
 
     int getHolderId(int reqid);
+
+    String getType(int reqid);
 }
 

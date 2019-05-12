@@ -6,9 +6,9 @@
         <id property="reqid"  column="reqid" />
         <result  property="name" column="name" />
         <result property="description" column="description"/>
-        <result property="type" column="type"/>
         <result property="price" column="price"/>
         <result property="school" column="school"/>
+        <result property="type" column="type"/>
         <result property="fintime" column="fintime"/>
         <result property="holder_id" column="holder_id"/>
         <result property="worker_id" column="worker_id"/>
@@ -17,7 +17,7 @@
         insert into request(name, description, type, price, fintime, school, holder_id)values (#{name},#{description},#{type},#{price},#{fintime},#{school},#{holder_id})
     </insert>
     <update id="setRequestConfirm">
-        update request set state= #{date} ,worker_id= #{userid} where reqid=#{reqid}
+        update request set state= #{state} ,worker_id= #{userid} where reqid=#{reqid}
     </update>
 
     <select id="getRequestList" parameterType="String" resultMap="RequestInfo">
@@ -31,14 +31,17 @@
     <select id="getRequest" parameterType="int" resultMap="RequestInfo">
         select * from request where reqid=#{reqid}
     </select>
-    <select id="getRequestAsHolder" parameterType="String" resultMap="RequestInfo">
+    <select id="getRequestAsHolder" parameterType="int" resultMap="RequestInfo">
         select * from request where holder_id=#{userid}
     </select>
-    <select id="getRequestAsWorker" parameterType="String" resultMap="RequestInfo">
+    <select id="getRequestAsWorker" parameterType="int" resultMap="RequestInfo">
         select * from request where worker_id=#{userid}
     </select>
     <select id="getHolderId" parameterType="int" resultType="int">
         select holder_id from request where reqid=#{reqid}
+    </select>
+    <select id="getType" resultType="java.lang.String">
+        select type from request where reqid=#{reqid}
     </select>
 
 </mapper>
