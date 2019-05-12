@@ -17,7 +17,10 @@
         insert into request(name, description, type, price, fintime, school, holder_id)values (#{name},#{description},#{type},#{price},#{fintime},#{school},#{holder_id})
     </insert>
     <update id="setRequestConfirm">
-        update request set state= #{state} ,worker_id= #{userid} where reqid=#{reqid}
+        update request set state= #{stateAfter} ,worker_id= #{userid} where reqid=#{reqid} and state=#{stateNow}
+    </update>
+    <update id="setRequestState">
+        update request set state =#{stateAfter} where reqid=#{reqid} and state=#{stateNow}
     </update>
 
     <select id="getRequestList" parameterType="String" resultMap="RequestInfo">

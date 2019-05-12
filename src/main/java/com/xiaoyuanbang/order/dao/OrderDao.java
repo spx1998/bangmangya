@@ -1,6 +1,5 @@
 package com.xiaoyuanbang.order.dao;
 
-import com.xiaoyuanbang.order.domain.RequestChao;
 import com.xiaoyuanbang.order.domain.RequestInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,7 +17,7 @@ public interface OrderDao {
 
     RequestInfo getRequest(int reqid);
 
-    void setRequestConfirm(@Param("reqid") int reqid, @Param("userid") int userid, @Param("state") String state);
+    int setRequestConfirm(@Param("reqid") int reqid, @Param("userid") int userid, @Param("stateAfter") String state,@Param("stateNow") String stateCreate);
 
     void createRequest(@Param("name") String name, @Param("description") String description, @Param("fintime") Date fintime, @Param("school") String school, @Param("type") String type, @Param("price") int price,@Param("holder_id") int userid);
 
@@ -29,5 +28,7 @@ public interface OrderDao {
     int getHolderId(int reqid);
 
     String getType(int reqid);
+
+    int setRequestState(@Param("reqid") int reqid,@Param("stateAfter") String stateAfter,@Param("stateNow") String stateNow);
 }
 

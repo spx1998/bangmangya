@@ -88,6 +88,7 @@ public class OrderController {
     /**
      * worker 接单
      */
+
     @Transactional
     @PostMapping("/record/confirm")
     public String confirmRequest(@RequestHeader("mySession")String mySession,
@@ -102,7 +103,9 @@ public class OrderController {
             }else{
                 return "no contact";
             }
-            orderDao.setRequestConfirm(reqid,userid, REQUEST_CONSTANT.STATE_ACCEPT);
+            if(0==orderDao.setRequestConfirm(reqid,userid, REQUEST_CONSTANT.STATE_ACCEPT,REQUEST_CONSTANT.STATE_CREATE)){
+                return "can't confirm, maybe has been confirmed already";
+            }
             int holder_id =orderDao.getHolderId(reqid);
             User holder = userDao.getUserById(holder_id);
 
@@ -184,6 +187,43 @@ public class OrderController {
             return "error";
         }
 
+    }
+    /**
+     *确认订单已完成
+     */
+    @Transactional
+    @PostMapping("/record/finish")
+    public String finishRequest(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
+        try {
+            String openid =AESUtil.decrypt(mySession,AESUtil.KEY);
+            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_FINISH,REQUEST_CONSTANT.STATE_ACCEPT)){
+                return "can't change";
+            }
+
+
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+
+    /**
+     * 取消订单
+     */
+    @Transactional
+    @PostMapping("/record/cancel")
+    public String cancelRequest(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
+        try {
+            String openid =AESUtil.decrypt(mySession,AESUtil.KEY);
+            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CANCEL,REQUEST_CONSTANT.STATE_CREATE)){
+                return "can't change";
+            }
+
+
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
     }
 
 }
