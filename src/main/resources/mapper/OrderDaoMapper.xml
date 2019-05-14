@@ -46,5 +46,8 @@
     <select id="getType" resultType="java.lang.String">
         select type from request where reqid=#{reqid}
     </select>
+    <select id="Search" resultMap="RequestInfo">
+        select reqid ,name,description from  request where match(name,description) against ('>${s2} >${s3} >${s4}  >${s5} +${s1}'in boolean mode) and school=#{param6};
+    </select>
 
 </mapper>

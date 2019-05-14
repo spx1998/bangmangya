@@ -2,6 +2,7 @@ package com.xiaoyuanbang.order.controller;
 
 import com.google.gson.Gson;
 import com.xiaoyuanbang.common.utils.AESUtil;
+import com.xiaoyuanbang.common.utils.SearchUtil;
 import com.xiaoyuanbang.order.dao.OrderDao;
 import com.xiaoyuanbang.order.domain.OriginRequest;
 import com.xiaoyuanbang.order.domain.REQUEST_CONSTANT;
@@ -195,7 +196,6 @@ public class OrderController {
     @PostMapping("/record/finish")
     public String finishRequest(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
         try {
-            String openid =AESUtil.decrypt(mySession,AESUtil.KEY);
             if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_FINISH,REQUEST_CONSTANT.STATE_ACCEPT)){
                 return "can't change";
             }
@@ -208,22 +208,95 @@ public class OrderController {
     }
 
     /**
-     * 取消订单
+     * holder取消订单
      */
     @Transactional
-    @PostMapping("/record/cancel")
-    public String cancelRequest(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
+    @PostMapping("/record/holder/cancel")
+    public String cancelRequestAsHolder(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
         try {
-            String openid =AESUtil.decrypt(mySession,AESUtil.KEY);
             if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CANCEL,REQUEST_CONSTANT.STATE_CREATE)){
                 return "can't change";
             }
-
-
         }catch (Exception e){
             return "error";
         }
         return "ok";
+    }
+    /**
+     * worker 取消订单
+     */
+    @Transactional
+    @PostMapping("/record/worker/cancel")
+    public String cancelPequestAsWorker(@RequestHeader("mySession")String mySession,@RequestParam("reqid")int reqid){
+        try {
+            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CREATE,REQUEST_CONSTANT.STATE_ACCEPT)){
+                return "can't change";
+            }
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
+    }
+    /**
+     * 查看worker信息
+     */
+    @Transactional
+    @GetMapping("/record/getworker")
+    public String getWorkerInfo(@RequestHeader("mySession")String mySession,@RequestParam("worker_id")int worker_id){
+        HashMap<String ,String> infoMap;
+        try{
+            User user = userDao.getUserById(worker_id);
+
+            //返回联系方式map
+            infoMap = new HashMap<>();
+            infoMap.put("username",user.getUsername());
+            infoMap.put("qqid", String.valueOf(user.getQqid()));
+            infoMap.put("wxid",user.getWxid());
+            infoMap.put("phone",String.valueOf(user.getPhone()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+        return g.toJson(infoMap);
+    }
+    /**
+     * 查看holder信息
+     */
+    @Transactional
+    @GetMapping("/record/getholder")
+    public String getHolder(@RequestHeader("mySession")String mySession,@RequestParam("holder_id")int holder_id){
+        HashMap<String ,String> infoMap;
+        try{
+            User user = userDao.getUserById(holder_id);
+
+            //返回联系方式map
+            infoMap = new HashMap<>();
+            infoMap.put("username",user.getUsername());
+            infoMap.put("qqid", String.valueOf(user.getQqid()));
+            infoMap.put("wxid",user.getWxid());
+            infoMap.put("phone",String.valueOf(user.getPhone()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+        return g.toJson(infoMap);
+    }
+    /**
+     *搜索功能
+     */
+    @Transactional
+    @GetMapping("/search/request")
+    public String searchRequest(@RequestParam("school")String school,@RequestBody String content){
+        List<RequestInfo> requestInfos;
+        try{
+
+            List<String> contentStr= SearchUtil.processContent(content);
+            requestInfos=orderDao.Search(contentStr.get(0),contentStr.get(1),contentStr.get(2),contentStr.get(3),contentStr.get(4),school);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+        return g.toJson(requestInfos);
     }
 
 }

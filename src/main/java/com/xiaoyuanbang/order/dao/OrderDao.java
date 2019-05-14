@@ -30,5 +30,7 @@ public interface OrderDao {
     String getType(int reqid);
 
     int setRequestState(@Param("reqid") int reqid,@Param("stateAfter") String stateAfter,@Param("stateNow") String stateNow);
+
+    List<RequestInfo> Search(@Param("s1") String s1,@Param("s2") String s2,@Param("s3") String s3,@Param("s4") String s4,@Param("s5")String s5,@Param("school") String school);
 }
 
