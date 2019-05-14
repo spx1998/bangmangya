@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 
 /**
@@ -105,11 +106,14 @@ public class UserController {
         }
         return "ok";
     }
+    /**
+     *
+     *  拉取学校列表
+     */
 
-
-
-
-
-
-
+    @Transactional
+    @GetMapping("/school")
+    public List<String> getSchool(){
+        return userDao.getSchoolList();
+    }
 }

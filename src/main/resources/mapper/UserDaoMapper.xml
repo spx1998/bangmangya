@@ -38,5 +38,8 @@
     <select id="getUserById" parameterType="int" resultMap="User">
         select * from user where id =#{holder_id}
     </select>
+    <select id="getSchoolList" resultType="java.lang.String">
+        select name from school ;
+    </select>
 
 </mapper>

@@ -4,6 +4,8 @@ import com.xiaoyuanbang.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 
 @Mapper
 public interface UserDao {
@@ -25,4 +27,6 @@ public interface UserDao {
     int getId(String openid);
 
     User getUserById(int holder_id);
+
+    List<String> getSchoolList();
 }
