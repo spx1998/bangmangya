@@ -99,7 +99,7 @@ public class OrderController {
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             User user=userDao.getUser(openid);
             int userid;
-            if(StringUtils.isNotBlank(user.getWxid())||user.getQqid()!=0||user.getPhone()!=0){
+            if(StringUtils.isNotBlank(user.getWxid())||StringUtils.isNotBlank(user.getQqid())||StringUtils.isNotBlank(user.getPhone())){
                 userid = user.getId();
             }else{
                 return "no contact";
@@ -113,9 +113,9 @@ public class OrderController {
             //返回联系方式map
             infoMap = new HashMap<>();
             infoMap.put("username",holder.getUsername());
-            infoMap.put("qqid", String.valueOf(holder.getQqid()));
+            infoMap.put("qqid", holder.getQqid());
             infoMap.put("wxid",holder.getWxid());
-            infoMap.put("phone",String.valueOf(holder.getPhone()));
+            infoMap.put("phone",holder.getPhone());
 
 
         }catch (Exception e){
@@ -146,7 +146,7 @@ public class OrderController {
 
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             User user=userDao.getUser(openid);
-            if(StringUtils.isBlank(user.getWxid())&&user.getQqid()==0&&user.getPhone()==0){
+            if(StringUtils.isBlank(user.getWxid())&&StringUtils.isBlank(user.getQqid())&&StringUtils.isBlank(user.getPhone())){
                 return "no contact";
             }
             int userid=user.getId();
@@ -298,5 +298,4 @@ public class OrderController {
         }
         return g.toJson(requestInfos);
     }
-
 }

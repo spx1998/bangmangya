@@ -94,9 +94,9 @@ public class UserController {
     @Transactional
     @PostMapping("/user/contact")
     public String bindUserContact(@RequestHeader("mySession")String mysession,
-                                  @RequestParam("qqid")int qqid,
+                                  @RequestParam("qqid")String qqid,
                                   @RequestParam("wxid")String wxid,
-                                  @RequestParam("phone")int phone){
+                                  @RequestParam("phone")String phone){
         try{
             String openid=AESUtil.decrypt(mysession,AESUtil.KEY);
             userDao.bindUserContact(openid,qqid,wxid,phone,USER_CONSTANTS.STATE_CONTACT); //需要修改状态
