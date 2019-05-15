@@ -7,6 +7,7 @@ import com.xiaoyuanbang.order.dao.OrderDao;
 import com.xiaoyuanbang.order.domain.OriginRequest;
 import com.xiaoyuanbang.order.domain.REQUEST_CONSTANT;
 import com.xiaoyuanbang.order.domain.RequestInfo;
+import com.xiaoyuanbang.order.domain.SearchContent;
 import com.xiaoyuanbang.user.dao.UserDao;
 import com.xiaoyuanbang.user.domain.User;
 import org.apache.commons.lang.StringUtils;
@@ -286,11 +287,11 @@ public class OrderController {
      */
     @Transactional
     @GetMapping("/search/request")
-    public String searchRequest(@RequestParam("school")String school,@RequestBody String content){
+    public String searchRequest(@RequestParam("school")String school,@RequestBody SearchContent content){
         List<RequestInfo> requestInfos;
         try{
 
-            List<String> contentStr= SearchUtil.processContent(content);
+            List<String> contentStr= SearchUtil.processContent(content.getContent());
             requestInfos=orderDao.Search(contentStr.get(0),contentStr.get(1),contentStr.get(2),contentStr.get(3),contentStr.get(4),school);
         }catch (Exception e){
             e.printStackTrace();
