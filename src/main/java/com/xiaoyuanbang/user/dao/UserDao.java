@@ -20,7 +20,7 @@ public interface UserDao {
 
     void bindSchool(@Param("openid")String openid, @Param("school")String school,@Param("state") String state);
 
-    void bindUserContact(@Param("openid")String openid,@Param("qqid") int qqid,@Param("wxid") String wxid,@Param("phone") int phone,@Param("state") String state);
+    void bindUserContact(@Param("openid")String openid, @Param("qqid") String qqid, @Param("wxid") String wxid, @Param("phone") String phone, @Param("state") String state);
 
     String getSchoolByOpenid(String openid);
 

@@ -8,9 +8,9 @@ public class User implements Serializable {
     private int id;
     private String username;
     private String gender;
-    private int qqid;
+    private String qqid;
     private String wxid;
-    private int phone;
+    private String  phone;
     private String school;
     private String openid;
     private String state;
@@ -56,11 +56,11 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public int getQqid() {
+    public String getQqid() {
         return qqid;
     }
 
-    public void setQqid(int qqid) {
+    public void setQqid(String  qqid) {
         this.qqid = qqid;
     }
 
@@ -72,11 +72,11 @@ public class User implements Serializable {
         this.wxid = wxid;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
