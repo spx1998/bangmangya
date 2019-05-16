@@ -286,7 +286,7 @@ public class OrderController {
      *搜索功能
      */
     @Transactional
-    @GetMapping("/search/request")
+    @PostMapping("/search/request")
     public String searchRequest(@RequestParam("school")String school,@RequestBody SearchContent content){
         List<RequestInfo> requestInfos;
         try{
