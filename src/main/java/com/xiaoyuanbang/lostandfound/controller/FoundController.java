@@ -19,7 +19,7 @@ public class FoundController {
 
 
     @Transactional
-    @PostMapping("/upload")
+    @PostMapping("/found/lost")
     public String uploadPicture(@RequestHeader("mySession")String mySession, @RequestParam(value = "file", required = false) MultipartFile picture){
         String pictureName;
         try {

@@ -230,7 +230,7 @@ public class OrderController {
     @PostMapping("/record/worker/cancel")
     public String cancelPequestAsWorker(@RequestHeader("mySession")String mySession,@RequestParam("reqid")int reqid){
         try {
-            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CREATE,REQUEST_CONSTANT.STATE_ACCEPT)){
+            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_WAITFORCANCEL,REQUEST_CONSTANT.STATE_ACCEPT)){
                 return "can't change";
             }
         }catch (Exception e){
@@ -298,5 +298,23 @@ public class OrderController {
             return "error";
         }
         return g.toJson(requestInfos);
+
+    }
+    /**
+     * holder确认取消
+     */
+    @Transactional
+    @PostMapping("/order/confirmCancel")
+    public String confirmCancel(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
+        try {
+            if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CREATE,REQUEST_CONSTANT.STATE_WAITFORCANCEL)){
+                return "can't change";
+            }
+
+
+        }catch (Exception e){
+            return "error";
+        }
+        return "ok";
     }
 }
