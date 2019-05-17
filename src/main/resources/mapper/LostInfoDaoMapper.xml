@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaoyuanbang.lostandfound.dao.LostInfoDao">
+    <resultMap type="com.xiaoyuanbang.lostandfound.domain.LostInfo" id="LostInfo">
+        <id property="lostid"  column="id" />
+        <result  property="name" column="name" />
+        <result property="description" column="description"/>
+        <result property="school" column="school"/>
+        <result property="type" column="type"/>
+        <result property="holder_id" column="holder_id"/>
+    </resultMap>
+    <insert id="addRecord">
+        insert into
+    </insert>
+    <update id="setRecordFinish">
+
+    </update>
+    <select id="getLostInfo" resultMap="LostInfo">
+        select
+    </select>
+    <select id="getRecordDetail" resultMap="LostInfo">
+
+    </select>
+
+</mapper>
