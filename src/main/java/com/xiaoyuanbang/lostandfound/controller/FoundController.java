@@ -3,9 +3,12 @@ package com.xiaoyuanbang.lostandfound.controller;
 import com.google.gson.Gson;
 import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.FileUtils;
+import com.xiaoyuanbang.common.utils.SearchUtil;
 import com.xiaoyuanbang.lostandfound.dao.LostInfoDao;
 import com.xiaoyuanbang.lostandfound.domain.LOST_CONSTANTS;
 import com.xiaoyuanbang.lostandfound.domain.LostInfo;
+import com.xiaoyuanbang.order.domain.RequestInfo;
+import com.xiaoyuanbang.order.domain.SearchContent;
 import com.xiaoyuanbang.user.dao.UserDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +144,24 @@ public class FoundController {
             return "error";
         }
         return "ok";
+    }
+    /**
+     *搜索功能
+     */
+    @Transactional
+    @PostMapping("/search/found")
+    public String searchLostInfo(@RequestParam("school")String school,@RequestBody SearchContent content){
+        List<LostInfo> lostInfos;
+        try{
+
+            List<String> contentStr= SearchUtil.processContent(content.getContent());
+            lostInfos=lostInfoDao.Search(contentStr.get(0),contentStr.get(1),contentStr.get(2),contentStr.get(3),contentStr.get(4),school,LOST_CONSTANTS.STATE_CREATE);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+        return g.toJson(lostInfos);
+
     }
 
 

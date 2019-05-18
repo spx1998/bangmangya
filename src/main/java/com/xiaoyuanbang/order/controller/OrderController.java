@@ -292,7 +292,7 @@ public class OrderController {
         try{
 
             List<String> contentStr= SearchUtil.processContent(content.getContent());
-            requestInfos=orderDao.Search(contentStr.get(0),contentStr.get(1),contentStr.get(2),contentStr.get(3),contentStr.get(4),school);
+            requestInfos=orderDao.Search(contentStr.get(0),contentStr.get(1),contentStr.get(2),contentStr.get(3),contentStr.get(4),school,REQUEST_CONSTANT.STATE_CREATE);
         }catch (Exception e){
             e.printStackTrace();
             return "error";
