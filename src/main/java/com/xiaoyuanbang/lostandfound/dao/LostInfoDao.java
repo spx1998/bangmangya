@@ -1,9 +1,11 @@
 package com.xiaoyuanbang.lostandfound.dao;
 
 import com.xiaoyuanbang.lostandfound.domain.LostInfo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface LostInfoDao {
 
     void addRecord(LostInfo lostInfo);
@@ -12,5 +14,5 @@ public interface LostInfoDao {
 
     LostInfo getRecordDetail(int id);
 
-    void setRecordFinish(int id, String stateFinish);
+    void setRecordFinish(int id, String state);
 }

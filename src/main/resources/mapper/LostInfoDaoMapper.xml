@@ -9,18 +9,20 @@
         <result property="school" column="school"/>
         <result property="type" column="type"/>
         <result property="holder_id" column="holder_id"/>
+        <result property="urls" column="url"/>
     </resultMap>
-    <insert id="addRecord">
-        insert into
+    <insert id="addRecord" useGeneratedKeys="true" keyColumn="id">
+        insert into lost_info(name, description, school, type, holder_id, url)
+        values (#{name},#{description},#{school},#{type},#{holder_id},#{urls})
     </insert>
     <update id="setRecordFinish">
-
+        update lost_info set state=#{param2} where id=#{param1}
     </update>
     <select id="getLostInfo" resultMap="LostInfo">
-        select
+        select * from lost_info where school=#{param1} and type=#{param2}
     </select>
     <select id="getRecordDetail" resultMap="LostInfo">
-
+        select * from lost_info where id=#{id}
     </select>
 
 </mapper>

@@ -1,10 +1,13 @@
 package com.xiaoyuanbang.lostandfound.controller;
 
 import com.google.gson.Gson;
+import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.FileUtils;
 import com.xiaoyuanbang.lostandfound.dao.LostInfoDao;
 import com.xiaoyuanbang.lostandfound.domain.LOST_CONSTANTS;
 import com.xiaoyuanbang.lostandfound.domain.LostInfo;
+import com.xiaoyuanbang.user.dao.UserDao;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +28,10 @@ public class FoundController {
     @Autowired
     LostInfoDao lostInfoDao;
 
-    Gson g=new Gson();
+    @Autowired
+    UserDao userDao;
+
+    private Gson g=new Gson();
 
     /**
      *上传图片
@@ -37,7 +43,8 @@ public class FoundController {
         try {
             //生成文件名,originalFileName为文件名
             String extendedName = Objects.requireNonNull(picture.getOriginalFilename()).substring(picture.getOriginalFilename().lastIndexOf("."));
-            pictureName =mySession+"-"+System.currentTimeMillis()+extendedName;
+            String openid = AESUtil.decrypt(mySession,AESUtil.KEY);
+            pictureName =openid+"-"+System.currentTimeMillis()+extendedName;
             //存储
             boolean uploadSuccessful=FileUtils.upload(picture, path, pictureName);
             //返回信息，返回路径
@@ -53,7 +60,23 @@ public class FoundController {
     /**
      * 取消上传
      */
-
+    @Transactional
+    @PostMapping("/found/upload/cancel")
+    public String cancelUpload(@RequestHeader String mySession,@RequestParam("url")String url){
+        try{
+            //提取文件名
+            String fileName = StringUtils.substringAfter(url,"/picture/");
+            File file = new File(url);
+            //删除
+            if(file.isFile()){
+                file.delete();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+        return "ok";
+    }
 
     /**
      * 发布寻物/寻找失主信息
@@ -62,6 +85,9 @@ public class FoundController {
     @PostMapping("/found/create")
     public String createLostInfo(@RequestHeader String mySession, @RequestBody LostInfo lostInfo){
         try{
+            String openid= AESUtil.decrypt(mySession,AESUtil.KEY);
+            int holder_id = userDao.getId(openid);
+            lostInfo.setHolder_id(holder_id);
             lostInfoDao.addRecord(lostInfo);
         }catch (Exception e){
             e.printStackTrace();
@@ -90,8 +116,8 @@ public class FoundController {
      * 查看详情
      */
     @Transactional
-    @GetMapping("/found/detail")
-    public String getRecordDetail(@RequestHeader String mySession,@RequestParam("lostid")int id ){
+    @GetMapping("/found/detail/{lostid}")
+    public String getRecordDetail(@RequestHeader String mySession,@PathVariable("lostid")int id ){
         LostInfo lostInfo;
         try{
             lostInfo = lostInfoDao.getRecordDetail(id);
@@ -116,5 +142,6 @@ public class FoundController {
         }
         return "ok";
     }
+
 
 }

@@ -1,9 +1,7 @@
 package com.xiaoyuanbang.lostandfound.domain;
 
-import com.xiaoyuanbang.common.domain.URL;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class LostInfo implements Serializable {
 
@@ -15,7 +13,7 @@ public class LostInfo implements Serializable {
     private String type;
     private int holder_id;
     private String state;
-    private List<URL> urls;
+    private String urls;
 
     public int getLostid() {
         return lostid;
@@ -73,11 +71,11 @@ public class LostInfo implements Serializable {
         this.state = state;
     }
 
-    public List<URL> getUrls() {
+    public String getUrls() {
         return urls;
     }
 
-    public void setUrls(List<URL> urls) {
+    public void setUrls(String urls) {
         this.urls = urls;
     }
 }
