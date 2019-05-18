@@ -19,7 +19,7 @@
         update lost_info set state=#{param2} where id=#{param1}
     </update>
     <select id="getLostInfo" resultMap="LostInfo">
-        select * from lost_info where school=#{param1} and type=#{param2}
+        select * from lost_info where school=#{param1} and type=#{param2} and state=#{state}
     </select>
     <select id="getRecordDetail" resultMap="LostInfo">
         select * from lost_info where id=#{id}

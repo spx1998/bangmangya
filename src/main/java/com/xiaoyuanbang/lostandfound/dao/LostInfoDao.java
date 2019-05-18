@@ -10,7 +10,7 @@ public interface LostInfoDao {
 
     void addRecord(LostInfo lostInfo);
 
-    List<LostInfo> getLostInfo(String school, int type);
+    List<LostInfo> getLostInfo(String school, int type, String state);
 
     LostInfo getRecordDetail(int id);
 

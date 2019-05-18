@@ -104,7 +104,7 @@ public class FoundController {
     public String getLostInfo(@RequestHeader String mySession, @RequestParam("school")String school,@RequestParam("type")int type){
         List<LostInfo> lostInfos;
         try{
-            lostInfos =lostInfoDao.getLostInfo(school,type);
+            lostInfos =lostInfoDao.getLostInfo(school,type,LOST_CONSTANTS.STATE_CREATE);
         }catch (Exception e){
             e.printStackTrace();
             return "error";

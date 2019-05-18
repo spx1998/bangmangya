@@ -216,7 +216,7 @@ public class OrderController {
     public String cancelRequestAsHolder(@RequestHeader("mySession")String mySession,@RequestParam("reqid") int reqid){
         try {
             if(0==orderDao.setRequestState(reqid,REQUEST_CONSTANT.STATE_CANCEL,REQUEST_CONSTANT.STATE_CREATE)){
-                return "can't change";
+                return "may has been confirmed";
             }
         }catch (Exception e){
             return "error";
