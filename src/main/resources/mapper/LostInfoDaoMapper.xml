@@ -27,5 +27,8 @@
     <select id="Search" resultMap="LostInfo">
         select * from  lost_info where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}'in boolean mode) and school=#{school} and state=#{state};
     </select>
+    <select id="getLostInfoAsOwner" resultMap="LostInfo">
+        select * from  lost_info where holder_id=#{id}
+    </select>
 
 </mapper>

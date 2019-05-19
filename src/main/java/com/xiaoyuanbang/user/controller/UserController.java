@@ -106,8 +106,8 @@ public class UserController {
         }
         return "ok";
     }
+
     /**
-     *
      *  拉取学校列表
      */
 
