@@ -7,7 +7,6 @@ import com.xiaoyuanbang.common.utils.SearchUtil;
 import com.xiaoyuanbang.lostandfound.dao.LostInfoDao;
 import com.xiaoyuanbang.lostandfound.domain.LOST_CONSTANTS;
 import com.xiaoyuanbang.lostandfound.domain.LostInfo;
-import com.xiaoyuanbang.order.domain.RequestInfo;
 import com.xiaoyuanbang.order.domain.SearchContent;
 import com.xiaoyuanbang.user.dao.UserDao;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +27,8 @@ import java.util.Objects;
 public class FoundController {
     @Value("${web.upload-path}")
     String path;
-
+    @Value("Nginx-picture-path")
+    String nginxPath;
     @Autowired
     LostInfoDao lostInfoDao;
 
@@ -58,7 +58,7 @@ public class FoundController {
                 if (!uploadSuccessful) {
                     return "upload error";
                 }
-                pictureNames.add(path+"/"+pictureName);
+                pictureNames.add(nginxPath+"/"+pictureName);
             }
         }catch (Exception e) {
             e.printStackTrace();
