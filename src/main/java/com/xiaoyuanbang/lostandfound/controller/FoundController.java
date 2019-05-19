@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,24 +42,29 @@ public class FoundController {
      */
     @Transactional
     @PostMapping("/found/upload")
-    public String uploadPicture(@RequestHeader("mySession")String mySession, @RequestParam(value = "file", required = false) MultipartFile picture){
+    public String uploadPicture(@RequestHeader("mySession")String mySession, @RequestParam(value = "file", required = false) MultipartFile[] pictures){
+        List<String> pictureNames=new ArrayList<>();
         String pictureName;
         try {
-            //生成文件名,originalFileName为文件名
-            String extendedName = Objects.requireNonNull(picture.getOriginalFilename()).substring(picture.getOriginalFilename().lastIndexOf("."));
-            String openid = AESUtil.decrypt(mySession,AESUtil.KEY);
-            pictureName =openid+"-"+System.currentTimeMillis()+extendedName;
-            //存储
-            boolean uploadSuccessful=FileUtils.upload(picture, path, pictureName);
-            //返回信息，返回路径
-            if(!uploadSuccessful){
-                return "upload error";
+            for (MultipartFile picture:pictures
+                 ) {
+                //生成文件名,originalFileName为文件名
+                String extendedName = Objects.requireNonNull(picture.getOriginalFilename()).substring(picture.getOriginalFilename().lastIndexOf("."));
+                String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
+                pictureName = openid + "-" + System.currentTimeMillis() + extendedName;
+                //存储
+                boolean uploadSuccessful = FileUtils.upload(picture, path, pictureName);
+                //返回信息，返回路径
+                if (!uploadSuccessful) {
+                    return "upload error";
+                }
+                pictureNames.add(path+"/"+pictureName);
             }
         }catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
-        return path+"/"+pictureName;
+        return g.toJson(pictureNames);
     }
     /**
      * 取消上传
