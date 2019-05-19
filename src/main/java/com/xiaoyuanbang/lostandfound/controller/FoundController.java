@@ -110,10 +110,10 @@ public class FoundController {
      */
     @Transactional
     @GetMapping("/found/list")
-    public String getLostInfo(@RequestHeader String mySession, @RequestParam("school")String school,@RequestParam("type")int type){
+    public String getLostInfo(@RequestHeader String mySession, @RequestParam("school")String school){
         List<LostInfo> lostInfos;
         try{
-            lostInfos =lostInfoDao.getLostInfo(school,type,LOST_CONSTANTS.STATE_CREATE);
+            lostInfos =lostInfoDao.getLostInfo(school,LOST_CONSTANTS.STATE_CREATE);
         }catch (Exception e){
             e.printStackTrace();
             return "error";
