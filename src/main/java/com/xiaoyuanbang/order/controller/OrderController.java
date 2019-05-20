@@ -117,6 +117,7 @@ public class OrderController {
             infoMap.put("qqid", holder.getQqid());
             infoMap.put("wxid",holder.getWxid());
             infoMap.put("phone",holder.getPhone());
+            infoMap.put("picUrl",holder.getPicUrl());
 
 
         }catch (Exception e){
