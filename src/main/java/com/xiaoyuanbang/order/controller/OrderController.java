@@ -254,6 +254,7 @@ public class OrderController {
             infoMap.put("qqid", String.valueOf(user.getQqid()));
             infoMap.put("wxid",user.getWxid());
             infoMap.put("phone",String.valueOf(user.getPhone()));
+            infoMap.put("picUrl",user.getPicUrl());
         }catch (Exception e){
             e.printStackTrace();
             return "error";
@@ -276,6 +277,7 @@ public class OrderController {
             infoMap.put("qqid", String.valueOf(user.getQqid()));
             infoMap.put("wxid",user.getWxid());
             infoMap.put("phone",String.valueOf(user.getPhone()));
+            infoMap.put("picUrl",user.getPicUrl());
         }catch (Exception e){
             e.printStackTrace();
             return "error";

@@ -64,13 +64,20 @@ public class UserController {
 
     }
 
+    /**
+     * 绑定性别、昵称和头像
+     * @param mysession
+     * @param name
+     * @param gender
+     * @return
+     */
     @Transactional
     @PostMapping("/user/signup")
-    public String signUp(@RequestHeader("mySession")String mysession, @RequestParam("name") String name, @RequestParam("gender") String gender){
+    public String signUp(@RequestHeader("mySession")String mysession, @RequestParam("name") String name, @RequestParam("gender") String gender,@RequestParam("picUrl")String picUrl){
 
         try{
             String openid=AESUtil.decrypt(mysession,AESUtil.KEY);
-            userDao.updateUserByOpenid(openid,name,gender, USER_CONSTANTS.STATE_SIGNUP);//还需要改变状态！
+            userDao.updateUserByOpenid(openid,name,gender,picUrl, USER_CONSTANTS.STATE_SIGNUP);//还需要改变状态！
         }catch (Exception e){
             e.printStackTrace();
             return "error";

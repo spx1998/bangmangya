@@ -16,7 +16,7 @@ public interface UserDao {
 
     User getUser(String openid);
 
-    void updateUserByOpenid(@Param("openid") String openid, @Param("name") String name, @Param("gender") String gender, @Param("state") String state);
+    void updateUserByOpenid(@Param("openid") String openid, @Param("name") String name, @Param("gender") String gender,@Param("picUrl")String picUrl, @Param("state") String state);
 
     void bindSchool(@Param("openid")String openid, @Param("school")String school,@Param("state") String state);
 
