@@ -27,7 +27,7 @@ import java.util.Objects;
 public class FoundController {
     @Value("${web.upload-path}")
     String path;
-    @Value("Nginx-picture-path")
+    @Value("${Nginx-picture-path}")
     String nginxPath;
     @Autowired
     LostInfoDao lostInfoDao;
