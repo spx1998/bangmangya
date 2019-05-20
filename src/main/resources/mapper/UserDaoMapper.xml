@@ -16,7 +16,7 @@
      insert into user(openid) values (#{openid})
  </insert>
     <update id="updateUserByOpenid">
-        update user set username=#{name},gender=#{gender},picUrl=#{picUrl} state=#{state} where openid=#{openid}
+        update user set username=#{name},gender=#{gender},picUrl=#{picUrl}, state=#{state} where openid=#{openid}
     </update>
     <update id="bindSchool">
         update user set school=#{school}, state=#{state} where openid=#{openid}
