@@ -30,5 +30,8 @@
     <select id="getLostInfoAsOwner" resultMap="LostInfo">
         select * from  lost_info where holder_id=#{id}
     </select>
+    <select id="getHolderById" resultType="java.lang.Integer">
+        select holder_id from lost_info where id=#{id}
+    </select>
 
 </mapper>

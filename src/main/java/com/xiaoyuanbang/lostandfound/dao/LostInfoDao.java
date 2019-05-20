@@ -20,4 +20,6 @@ public interface LostInfoDao {
     List<LostInfo> Search(@Param("s1") String s1, @Param("s2") String s2,@Param("s3") String s3,@Param("s4") String s4,@Param("s5") String s5 ,@Param("school") String school,@Param("state")String state);
 
     List<LostInfo> getLostInfoAsOwner(int id);
+
+    int getHolderById(int id);
 }
