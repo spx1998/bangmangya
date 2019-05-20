@@ -15,6 +15,15 @@ public class User implements Serializable {
     private String openid;
     private String state;
     private String mySession;
+    private String picUrl;
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
     public String getMySession() {
         return mySession;

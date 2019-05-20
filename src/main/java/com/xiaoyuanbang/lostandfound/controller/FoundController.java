@@ -27,7 +27,7 @@ import java.util.Objects;
 public class FoundController {
     @Value("${web.upload-path}")
     String path;
-    @Value("Nginx-picture-path")
+    @Value("${Nginx-picture-path}")
     String nginxPath;
     @Autowired
     LostInfoDao lostInfoDao;
@@ -42,12 +42,12 @@ public class FoundController {
      */
     @Transactional
     @PostMapping("/found/upload")
-    public String uploadPicture(@RequestHeader("mySession")String mySession, @RequestParam(value = "file", required = false) MultipartFile[] pictures){
-        List<String> pictureNames=new ArrayList<>();
+    public String uploadPicture(@RequestHeader("mySession")String mySession, @RequestParam(value = "file", required = false) MultipartFile picture){
+//        List<String> pictureNames=new ArrayList<>();
         String pictureName;
         try {
-            for (MultipartFile picture:pictures
-                 ) {
+//            for (MultipartFile picture:pictures
+//                 ) {
                 //生成文件名,originalFileName为文件名
                 String extendedName = Objects.requireNonNull(picture.getOriginalFilename()).substring(picture.getOriginalFilename().lastIndexOf("."));
                 String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
@@ -58,13 +58,13 @@ public class FoundController {
                 if (!uploadSuccessful) {
                     return "upload error";
                 }
-                pictureNames.add(nginxPath+"/"+pictureName);
-            }
+//                pictureNames.add(nginxPath+"/"+pictureName);
+//            }
         }catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
-        return g.toJson(pictureNames);
+        return nginxPath+"/"+pictureName;
     }
     /**
      * 取消上传

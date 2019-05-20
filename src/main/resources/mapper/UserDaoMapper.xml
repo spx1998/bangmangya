@@ -10,12 +10,13 @@
         <result property="phone" column="phone"/>
         <result property="school" column="school"/>
         <result property="openid" column="openid"/>
+        <result property="picUrl" column="picUrl"/>
     </resultMap>
  <insert id="createNewUser" parameterType="String" >
      insert into user(openid) values (#{openid})
  </insert>
     <update id="updateUserByOpenid">
-        update user set username=#{name},gender=#{gender}, state=#{state} where openid=#{openid}
+        update user set username=#{name},gender=#{gender},picUrl=#{picUrl}, state=#{state} where openid=#{openid}
     </update>
     <update id="bindSchool">
         update user set school=#{school}, state=#{state} where openid=#{openid}
