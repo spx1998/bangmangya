@@ -125,8 +125,8 @@ public class FoundController {
      * 查看详情
      */
     @Transactional
-    @GetMapping("/found/detail/{lostid}")
-    public String getRecordDetail(@RequestHeader String mySession,@PathVariable("lostid")int id ){
+    @GetMapping("/found/detail")
+    public String getRecordDetail(@RequestHeader String mySession,@RequestParam("lostid")int id ){
         LostInfo lostInfo;
         try{
             lostInfo = lostInfoDao.getRecordDetail(id);
