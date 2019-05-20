@@ -64,7 +64,7 @@ public class FoundController {
             e.printStackTrace();
             return "error";
         }
-        return g.toJson(nginxPath+"/"+pictureName);
+        return nginxPath+"/"+pictureName;
     }
     /**
      * 取消上传
