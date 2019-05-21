@@ -6,22 +6,14 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class JedisPoolManager {
-    @Value("${spring.redis.testOnBorrow}")
-    boolean testOnBorrow;
-    @Value("${spring.redis.maxIdle}")
-    int maxIdle;
-    @Value("${spring.redis.blockWhenExhausted}")
-    boolean blockWhenExhausted;
-    @Value("${spring.redis.maxWaitMillis}")
-    int maxWaitMillis;
-    @Value("${spring.redis.maxTotal}")
-    int maxTotal;
-    @Value("${spring.redis.host}")
-    String host;
-    @Value("${spring.redis.port}")
-    String port;
+    private boolean testOnBorrow=true;
+    private int maxIdle=8;
+    boolean blockWhenExhausted=true;
+    private int maxWaitMillis=-1;
+    private int maxTotal=200;
+    private String host="127.0.0.1";
+    private int port=6379;
     private volatile static JedisPoolManager manager;
-//    private  final JedisPool pool;
     private final  JedisPool poolCache;
 
     private JedisPoolManager() {
@@ -31,7 +23,9 @@ public class JedisPoolManager {
             config.setMaxTotal(maxTotal);
             config.setMaxWaitMillis(maxWaitMillis);
             config.setTestOnBorrow(testOnBorrow);
-            poolCache=new JedisPool(config,host,Integer.parseInt(port));
+            config.setMinIdle(0);
+//            new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
+            poolCache=new JedisPool(config,host,port);
         }catch (Exception e){
             throw new IllegalArgumentException("init JedisPool error",e.getCause());
         }
