@@ -185,7 +185,7 @@ public class OrderController {
                 requestInfo.setDescription(lostInfo.getDescription());
                 requestInfo.setState(lostInfo.getState());
                 requestInfo.setHolder_id(userid);
-                requestInfo.setType(lostInfo.getType()+5);
+                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
                 requestInfos.add(requestInfo);
             }
             return g.toJson(requestInfos);
