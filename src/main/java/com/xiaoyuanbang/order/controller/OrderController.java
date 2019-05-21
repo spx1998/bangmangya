@@ -1,5 +1,6 @@
 package com.xiaoyuanbang.order.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.SearchUtil;
@@ -177,18 +178,18 @@ public class OrderController {
             List<LostInfo> lostInfos = lostInfoDao.getLostInfoAsOwner(userid);
             List<RequestInfo> requestInfos=orderDao.getRequestAsHolder(userid);
             //lostInfo强行转换成RequestInfo
-            RequestInfo requestInfo;
-            for(LostInfo lostInfo: lostInfos){
-                requestInfo=new RequestInfo();
-                requestInfo.setReqid(lostInfo.getLostid());
-                requestInfo.setName(lostInfo.getName());
-                requestInfo.setDescription(lostInfo.getDescription());
-                requestInfo.setState(lostInfo.getState());
-                requestInfo.setHolder_id(userid);
-                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
-                requestInfos.add(requestInfo);
-            }
-            return g.toJson(requestInfos);
+//            RequestInfo requestInfo;
+//            for(LostInfo lostInfo: lostInfos){
+//                requestInfo=new RequestInfo();
+//                requestInfo.setReqid(lostInfo.getLostid());
+//                requestInfo.setName(lostInfo.getName());
+//                requestInfo.setDescription(lostInfo.getDescription());
+//                requestInfo.setState(lostInfo.getState());
+//                requestInfo.setHolder_id(userid);
+//                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
+//                requestInfos.add(requestInfo);
+//            }
+            return g.toJson(requestInfos)+g.toJson(lostInfos);
         }catch (Exception e){
             e.printStackTrace();
             return "error";
