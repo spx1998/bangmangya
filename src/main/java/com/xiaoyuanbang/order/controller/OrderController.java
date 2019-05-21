@@ -3,6 +3,8 @@ package com.xiaoyuanbang.order.controller;
 import com.google.gson.Gson;
 import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.SearchUtil;
+import com.xiaoyuanbang.lostandfound.dao.LostInfoDao;
+import com.xiaoyuanbang.lostandfound.domain.LostInfo;
 import com.xiaoyuanbang.order.dao.OrderDao;
 import com.xiaoyuanbang.order.domain.OriginRequest;
 import com.xiaoyuanbang.order.domain.REQUEST_CONSTANT;
@@ -30,6 +32,8 @@ public class OrderController {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    LostInfoDao lostInfoDao;
 
     private SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
     private Gson g= new Gson();
@@ -162,7 +166,7 @@ public class OrderController {
     }
 
     /**
-     *获取自己发布的订单
+     *获取自己发布的订单(包括request 和lost_info)
      */
     @Transactional
     @GetMapping("/record/holder/list")
@@ -170,7 +174,20 @@ public class OrderController {
         try{
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             int userid= userDao.getId(openid);
+            List<LostInfo> lostInfos = lostInfoDao.getLostInfoAsOwner(userid);
             List<RequestInfo> requestInfos=orderDao.getRequestAsHolder(userid);
+            //lostInfo强行转换成RequestInfo
+            RequestInfo requestInfo;
+            for(LostInfo lostInfo: lostInfos){
+                requestInfo=new RequestInfo();
+                requestInfo.setReqid(lostInfo.getLostid());
+                requestInfo.setName(lostInfo.getName());
+                requestInfo.setDescription(lostInfo.getDescription());
+                requestInfo.setState(lostInfo.getState());
+                requestInfo.setHolder_id(userid);
+                requestInfo.setType(lostInfo.getType()+5);
+                requestInfos.add(requestInfo);
+            }
             return g.toJson(requestInfos);
         }catch (Exception e){
             e.printStackTrace();
