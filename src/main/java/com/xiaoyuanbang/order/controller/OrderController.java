@@ -189,7 +189,7 @@ public class OrderController {
 //                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
 //                requestInfos.add(requestInfo);
 //            }
-            return g.toJson(requestInfos)+g.toJson(lostInfos);
+            return JSON.toJSONString(g.toJson(requestInfos)+g.toJson(lostInfos));
         }catch (Exception e){
             e.printStackTrace();
             return "error";
