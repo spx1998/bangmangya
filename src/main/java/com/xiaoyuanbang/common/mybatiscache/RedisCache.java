@@ -1,12 +1,9 @@
 package com.xiaoyuanbang.common.mybatiscache;
 
 import org.apache.ibatis.cache.Cache;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.exceptions.JedisAskDataException;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.concurrent.locks.ReadWriteLock;
@@ -87,7 +84,18 @@ public class RedisCache implements Cache {
 
     @Override
     public void clear() {
-
+        Jedis jedis =null;
+        try{
+            jedis = JedisPoolManager.getMgr().getCacheResource();
+            jedis.flushDB();
+        }catch (JedisConnectionException e){
+            e.printStackTrace();
+        }
+        finally {
+            if(jedis!= null){
+                jedis.close();
+            }
+        }
     }
 
     @Override
