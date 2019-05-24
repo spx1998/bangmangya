@@ -171,23 +171,23 @@ public class FoundController {
         return g.toJson(lostInfos);
     }
 
-    /**
-     * 个人中心 寻物列表
-     */
-    @Transactional
-    @GetMapping("/found/center/list")
-    public String getLostListAsOwner(@RequestHeader("mySession")String mySession){
-        List<LostInfo> lostInfos ;
-        try{
-            String openid = AESUtil.decrypt(mySession,AESUtil.KEY);
-            int id= userDao.getId(openid);
-            lostInfos = lostInfoDao.getLostInfoAsOwner(id);
-        }catch (Exception e){
-            e.printStackTrace();
-            return "error";
-        }
-        return g.toJson(lostInfos);
-    }
+//    /**
+//     * 个人中心 寻物列表
+//     */
+//    @Transactional
+//    @GetMapping("/found/center/list")
+//    public String getLostListAsOwner(@RequestHeader("mySession")String mySession){
+//        List<LostInfo> lostInfos ;
+//        try{
+//            String openid = AESUtil.decrypt(mySession,AESUtil.KEY);
+//            int id= userDao.getId(openid);
+//            lostInfos = lostInfoDao.getLostInfoAsOwner(id);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return "error";
+//        }
+//        return g.toJson(lostInfos);
+//    }
     /**
      * 返回联系方式
      */
