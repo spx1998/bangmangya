@@ -175,20 +175,19 @@ public class OrderController {
         try{
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             int userid= userDao.getId(openid);
-            List<LostInfo> lostInfos = lostInfoDao.getLostInfoAsOwner(userid);
+//            List<LostInfo> lostInfos = lostInfoDao.getLostInfoAsOwner(userid);
             List<RequestInfo> requestInfos=orderDao.getRequestAsHolder(userid);
 //            lostInfo强行转换成RequestInfo
-            RequestInfo requestInfo;
-            for(LostInfo lostInfo: lostInfos){
-                requestInfo=new RequestInfo();
-                requestInfo.setReqid(lostInfo.getLostid());
-                requestInfo.setName(lostInfo.getName());
-                requestInfo.setDescription(lostInfo.getDescription());
-                requestInfo.setState(lostInfo.getState());
-                requestInfo.setHolder_id(userid);
-                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
-                requestInfos.add(requestInfo);
-            }
+            //            for(LostInfo lostInfo: lostInfos){
+//                requestInfo=new RequestInfo();
+//                requestInfo.setReqid(lostInfo.getLostid());
+//                requestInfo.setName(lostInfo.getName());
+//                requestInfo.setDescription(lostInfo.getDescription());
+//                requestInfo.setState(lostInfo.getState());
+//                requestInfo.setHolder_id(userid);
+//                requestInfo.setType(String.valueOf(Integer.parseInt(lostInfo.getType())+5));
+//                requestInfos.add(requestInfo);
+//            }
             return g.toJson(requestInfos);
         }catch (Exception e){
             e.printStackTrace();
