@@ -40,8 +40,15 @@ public class TemplateThread implements Runnable {
     @Override
     public void run() {
         String mydata = generateJson(reqid,worker_name);
-        String params = "access_token="+accessToken+"&touser="+holder_openid+"&template_id="+APPINFO.TEMPLATE_ID+"&form_id="+form_id+"&data="+mydata;
-        String str =HttpRequest.sendGet("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send",params);
+        String urlParam ="access_token="+accessToken;
+//        String params = +"&touser="+holder_openid+"&template_id="+APPINFO.TEMPLATE_ID+"&form_id="+form_id+"&data="+mydata;
+        Map<String,String> map=new HashMap<>();
+        map.put("touser",holder_openid);
+        map.put("template_id",APPINFO.TEMPLATE_ID);
+        map.put("form_id",form_id);
+        map.put("data",JSON.toJSONString(mydata));
+        String body = JSON.toJSONString(map);
+        String str =HttpRequest.sendPost("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?"+urlParam,body);
         System.out.println(str);
     }
 
