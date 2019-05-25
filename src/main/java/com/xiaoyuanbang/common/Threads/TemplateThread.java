@@ -41,7 +41,8 @@ public class TemplateThread implements Runnable {
     public void run() {
         String mydata = generateJson(reqid,worker_name);
         String params = "access_token="+accessToken+"&touser="+holder_openid+"&template_id="+APPINFO.TEMPLATE_ID+"&form_id="+form_id+"&data="+mydata;
-        HttpRequest.sendGet("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send",params);
+        String str =HttpRequest.sendGet("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send",params);
+        System.out.println(str);
     }
 
     private String generateJson(int reqid, String worker_name) {
