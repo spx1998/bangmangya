@@ -2,6 +2,7 @@ package com.xiaoyuanbang.order.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.xiaoyuanbang.common.Threads.TemplateThread;
 import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.SearchUtil;
 import com.xiaoyuanbang.lostandfound.dao.LostInfoDao;
@@ -99,7 +100,8 @@ public class OrderController {
     @Transactional
     @PostMapping("/record/confirm")
     public String confirmRequest(@RequestHeader("mySession")String mySession,
-                                 @RequestParam("reqid") int reqid){
+                                 @RequestParam("reqid") int reqid,
+                                 @RequestParam("formId")String formId){
         HashMap<String,String> infoMap;
         try{
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
@@ -111,7 +113,7 @@ public class OrderController {
                 return "no contact";
             }
             if(0==orderDao.setRequestConfirm(reqid,userid, REQUEST_CONSTANT.STATE_ACCEPT,REQUEST_CONSTANT.STATE_CREATE)){
-                return "can't confirm, maybe has been confirmed already";
+                return "can't confirm";
             }
             int holder_id =orderDao.getHolderId(reqid);
             User holder = userDao.getUserById(holder_id);
@@ -123,8 +125,9 @@ public class OrderController {
             infoMap.put("wxid",holder.getWxid());
             infoMap.put("phone",holder.getPhone());
             infoMap.put("picUrl",holder.getPicUrl());
-
-
+            //发送模板消息
+            TemplateThread templateThread = new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId);
+            templateThread.run();
         }catch (Exception e){
             e.printStackTrace();
             return "error";
@@ -337,4 +340,5 @@ public class OrderController {
         }
         return "ok";
     }
+
 }
