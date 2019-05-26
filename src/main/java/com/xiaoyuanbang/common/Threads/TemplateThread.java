@@ -6,8 +6,6 @@ import com.xiaoyuanbang.common.domain.APPINFO;
 import com.xiaoyuanbang.common.domain.TemplateData;
 import com.xiaoyuanbang.common.domain.TokenMsg;
 import com.xiaoyuanbang.common.utils.HttpRequest;
-import com.xiaoyuanbang.user.dao.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +44,7 @@ public class TemplateThread implements Runnable {
         map.put("touser",holder_openid);
         map.put("template_id",APPINFO.TEMPLATE_ID);
         map.put("form_id",form_id);
-        map.put("data",JSON.toJSONString(mydata));
+        map.put("data",(mydata));
         String body = JSON.toJSONString(map);
         String str =HttpRequest.sendPost("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?"+urlParam,body);
         System.out.println(str);
