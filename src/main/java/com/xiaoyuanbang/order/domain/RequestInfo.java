@@ -17,7 +17,7 @@ public class RequestInfo   implements Serializable {
     private String school;
     private int holder_id;
     private int worker_id;
-
+    private String formId;
     /*public RequestInfo(String name, String description, int price, String school, String type, Date fintime) {
         this.setName(name);
         this.setDescription(description);
@@ -26,6 +26,15 @@ public class RequestInfo   implements Serializable {
         this.setType(type);
         this.setFintime(fintime);
     }*/
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
     public int getReqid() {
         return reqid;
     }

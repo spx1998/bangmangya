@@ -100,8 +100,7 @@ public class OrderController {
     @Transactional
     @PostMapping("/record/confirm")
     public String confirmRequest(@RequestHeader("mySession")String mySession,
-                                 @RequestParam("reqid") int reqid,
-                                 @RequestParam("formId")String formId){
+                                 @RequestParam("reqid") int reqid){
         HashMap<String,String> infoMap;
         try{
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
@@ -116,6 +115,7 @@ public class OrderController {
                 return "can't confirm";
             }
             int holder_id =orderDao.getHolderId(reqid);
+            String formId = orderDao.getFormId(reqid);
             User holder = userDao.getUserById(holder_id);
 
             //返回联系方式map
@@ -151,6 +151,7 @@ public class OrderController {
             requestInfo.setSchool(originRequest.getSchool());
             requestInfo.setPrice(originRequest.getPrice());
             requestInfo.setDescription(originRequest.getDescription());
+            requestInfo.setFormId(originRequest.getFormId());
                     //new RequestInfo(originRequest.getName(),originRequest.getDescription(),originRequest.getPrice(),originRequest.getSchool(),originRequest.getType(),fintime);
             requestInfo.setFintime(fintime);
 
@@ -161,7 +162,7 @@ public class OrderController {
             }
             int userid=user.getId();
 
-            orderDao.createRequest(requestInfo.getName(), requestInfo.getDescription(), requestInfo.getFintime(), requestInfo.getSchool(), requestInfo.getType(), requestInfo.getPrice(), userid);
+            orderDao.createRequest(requestInfo.getName(), requestInfo.getDescription(), requestInfo.getFintime(), requestInfo.getSchool(), requestInfo.getType(), requestInfo.getPrice(), userid,requestInfo.getFormId());
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();

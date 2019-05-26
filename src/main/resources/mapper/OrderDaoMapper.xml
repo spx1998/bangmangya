@@ -13,9 +13,10 @@
         <result property="fintime" column="fintime"/>
         <result property="holder_id" column="holder_id"/>
         <result property="worker_id" column="worker_id"/>
+        <result property="formId" column="form_id"/>
     </resultMap>
     <insert id="createRequest">
-        insert into request(name, description, type, price, fintime, school, holder_id)values (#{name},#{description},#{type},#{price},#{fintime},#{school},#{holder_id})
+        insert into request(name, description, type, price, fintime, school, holder_id,form_id)values (#{name},#{description},#{type},#{price},#{fintime},#{school},#{holder_id},#{form_id})
     </insert>
     <update id="setRequestConfirm">
         update request set state= #{stateAfter} ,worker_id= #{userid} where reqid=#{reqid} and state=#{stateNow}
@@ -49,6 +50,9 @@
     </select>
     <select id="Search" resultMap="RequestInfo">
         select * from  request where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}' in boolean mode) and school=#{school} and state=#{state};
+    </select>
+    <select id="getFormId" parameterType="int" resultType="java.lang.String">
+        select form_id from request where reqid =#{reqid}
     </select>
 
 </mapper>
