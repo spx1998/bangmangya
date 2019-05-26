@@ -20,16 +20,16 @@
         update lost_info set state=#{param2} where id=#{param1}
     </update>
     <select id="getLostInfo" resultMap="LostInfo">
-        select * from lost_info where school=#{param1}  and state=#{state}
+        select * from lost_info where school=#{param1}  and state=#{state} order by id DESC
     </select>
     <select id="getRecordDetail" resultMap="LostInfo">
         select * from lost_info where id=#{id}
     </select>
     <select id="Search" resultMap="LostInfo">
-        select * from  lost_info where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}'in boolean mode) and school=#{school} and state=#{state};
+        select * from  lost_info where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}'in boolean mode) and school=#{school} and state=#{state} order by id DESC;
     </select>
     <select id="getLostInfoAsOwner" resultMap="LostInfo">
-        select * from  lost_info where holder_id=#{id}
+        select * from  lost_info where holder_id=#{id} order by id DESC;
     </select>
     <select id="getHolderById" resultType="java.lang.Integer">
         select holder_id from lost_info where id=#{id}

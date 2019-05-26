@@ -26,21 +26,21 @@
     </update>
 
     <select id="getRequestList" parameterType="String" resultMap="RequestInfo">
-        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state}
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} order by reqid DESC
     </select>
 
     <select id="getRequestListByType"  resultMap="RequestInfo">
-        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type}
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type} order by reqid DESC
     </select>
 
     <select id="getRequest" parameterType="int" resultMap="RequestInfo">
         select * from request where reqid=#{reqid}
     </select>
     <select id="getRequestAsHolder" parameterType="int" resultMap="RequestInfo">
-        select * from request where holder_id=#{userid}
+        select * from request where holder_id=#{userid} order by reqid DESC
     </select>
     <select id="getRequestAsWorker" parameterType="int" resultMap="RequestInfo">
-        select * from request where worker_id=#{userid}
+        select * from request where worker_id=#{userid} order by reqid DESC
     </select>
     <select id="getHolderId" parameterType="int" resultType="int">
         select holder_id from request where reqid=#{reqid}
@@ -49,7 +49,7 @@
         select type from request where reqid=#{reqid}
     </select>
     <select id="Search" resultMap="RequestInfo">
-        select * from  request where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}' in boolean mode) and school=#{school} and state=#{state};
+        select * from  request where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}' in boolean mode) and school=#{school} and state=#{state} order by reqid DESC;
     </select>
     <select id="getFormId" parameterType="int" resultType="java.lang.String">
         select form_id from request where reqid =#{reqid}
