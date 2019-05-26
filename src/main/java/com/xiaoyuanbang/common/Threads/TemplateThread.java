@@ -37,26 +37,26 @@ public class TemplateThread implements Runnable {
 
     @Override
     public void run() {
-        String mydata = generateJson(reqid,worker_name);
+        Map dataMap = generateJson(reqid,worker_name);
         String urlParam ="access_token="+accessToken;
 //        String params = +"&touser="+holder_openid+"&template_id="+APPINFO.TEMPLATE_ID+"&form_id="+form_id+"&data="+mydata;
-        Map<String,String> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("touser",holder_openid);
         map.put("template_id",APPINFO.TEMPLATE_ID);
         map.put("form_id",form_id);
-        map.put("data",(mydata));
+        map.put("data",dataMap);
         String body = JSON.toJSONString(map);
         String str =HttpRequest.sendPost("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?"+urlParam,body);
         System.out.println(str);
     }
 
-    private String generateJson(int reqid, String worker_name) {
+    private Map generateJson(int reqid, String worker_name) {
         TemplateData templateData1 = new TemplateData(reqid);
         TemplateData templateData2 =new TemplateData(worker_name);
 //        Gson gson =new Gson();
         ConcurrentHashMap<String,TemplateData> map= new ConcurrentHashMap<>();
         map.put("keyword1",(templateData1));
         map.put("keyword2",(templateData2));
-        return JSON.toJSONString(map);
+        return map;
     }
 }
