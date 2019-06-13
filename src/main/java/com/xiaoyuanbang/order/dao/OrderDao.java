@@ -34,5 +34,7 @@ public interface OrderDao {
     List<RequestInfo> Search(@Param("s1") String s1, @Param("s2") String s2, @Param("s3") String s3, @Param("s4") String s4, @Param("s5") String s5, @Param("school") String school,@Param("state") String state);
 
     String getFormId(int reqid);
+
+    int setOverDue(String stateOverDue,String stateCreate);
 }
 

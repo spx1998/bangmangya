@@ -24,6 +24,9 @@
     <update id="setRequestState">
         update request set state =#{stateAfter} where reqid=#{reqid} and state=#{stateNow}
     </update>
+    <update id="setOverDue" parameterType="String">
+        update request set state =#{param1} where state=#{param2} and to_days(current_date)>to_days(fintime)
+    </update>
 
     <select id="getRequestList" parameterType="String" resultMap="RequestInfo">
         select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} order by reqid DESC
