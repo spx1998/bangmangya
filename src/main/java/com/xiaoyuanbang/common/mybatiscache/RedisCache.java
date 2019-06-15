@@ -113,7 +113,7 @@ public class RedisCache implements Cache {
                 jedis.close();
             }
         }
-        return 0;
+        return size;
     }
 
     @Override
