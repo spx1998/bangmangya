@@ -12,6 +12,8 @@ import com.xiaoyuanbang.user.dao.UserDao;
 import com.xiaoyuanbang.user.domain.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,7 @@ import java.util.concurrent.SynchronousQueue;
 @RestController
 public class UserController {
     //需要激活日志
-
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private Gson g = new Gson();
 
     @Autowired
@@ -60,6 +62,7 @@ public class UserController {
          */
         User user = userDao.getUser(userInfo.getOpenid());
         user.setMySession(AESUtil.encrypt(userInfo.getOpenid(),AESUtil.KEY));
+        logger.info(user.getUsername()+"登录成功");
         return g.toJson(user) ;
 
     }
@@ -95,6 +98,7 @@ public class UserController {
             e.printStackTrace();
             return "error";
         }
+        logger.info("新用户注册");
         return "ok";
     }
 

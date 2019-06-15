@@ -14,6 +14,7 @@ import com.xiaoyuanbang.user.dao.UserDao;
 import com.xiaoyuanbang.user.domain.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Service
 @RestController
@@ -34,6 +36,9 @@ public class OrderController {
     UserDao userDao;
     @Autowired
     LostInfoDao lostInfoDao;
+    @Autowired
+    @Qualifier("templateMsgExecutor")
+    Executor executor;
 
     private SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
     private Gson g= new Gson();
@@ -123,9 +128,10 @@ public class OrderController {
             infoMap.put("wxid",holder.getWxid());
             infoMap.put("phone",holder.getPhone());
             infoMap.put("picUrl",holder.getPicUrl());
-            //发送模板消息
-            TemplateThread templateThread = new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId);
-            templateThread.run();
+            //使用线程池，发送模板消息
+            executor.execute(new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId));
+//            TemplateThread templateThread = new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId);
+//            templateThread.run();
         }catch (Exception e){
             e.printStackTrace();
             return "error";
