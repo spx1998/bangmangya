@@ -36,5 +36,9 @@ public interface OrderDao {
     String getFormId(int reqid);
 
     int setOverDue(String stateOverDue,String stateCreate);
+
+    List<RequestInfo> getAllRequest();
+
+    void setRequestScore(List<RequestInfo> requestInfos);
 }
 

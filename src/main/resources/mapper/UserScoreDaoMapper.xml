@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaoyuanbang.user.dao.UserScoreDao">
+    <cache type="com.xiaoyuanbang.common.mybatiscache.RedisCache"/>
+    <resultMap id="UserScoreMap" type="com.xiaoyuanbang.user.domain.UserScoreInfo">
+        <id column="id" property="id"/>
+        <result property="score" column="score"/>
+        <result property="lostNum" column="lost_num"/>
+        <result property="requestNum" column="request_num"/>
+        <result property="acceptNum" column="accept_num"/>
+        <result property="openid" column="openid"/>
+        <result property="registerReward" column="register_reward"/>
+        <result property="registerDate" column="register_date"/>
+    </resultMap>
+    <insert id="createUser">
+        insert into user_score (openid,register_date)
+        values (#{openid},current_date());
+    </insert>
+    <update id="addRequestNum" >
+        update user_score
+        set request_num=request_num+1
+        where openid=#{openid};
+    </update>
+    <update id="addLostNum" >
+        update user_score
+        set lost_num=lost_num+1
+        where openid=#{openid};
+    </update>
+    <update id="addAcceptNum" >
+        update user_score
+        set accept_num=accept_num+1
+        where openid=#{openid};
+    </update>
+    <update id="updateScore" parameterType="list">
+        update user_score
+        <foreach collection="list" separator="," item="userScoreInfo">
+            set score=#{userScoreInfo.score},register_reward#{userScoreInfo.registerReward}
+            where openid =#{userScoreInfo.openid}
+        </foreach>
+    </update>
+    <select id="getUserScoreInfos" resultMap="UserScoreMap">
+        select * from user_score;
+    </select>
+
+</mapper>

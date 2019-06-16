@@ -9,6 +9,7 @@ import com.xiaoyuanbang.lostandfound.domain.LOST_CONSTANTS;
 import com.xiaoyuanbang.lostandfound.domain.LostInfo;
 import com.xiaoyuanbang.order.domain.SearchContent;
 import com.xiaoyuanbang.user.dao.UserDao;
+import com.xiaoyuanbang.user.dao.UserScoreDao;
 import com.xiaoyuanbang.user.domain.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,14 @@ public class FoundController {
     String path;
     @Value("${Nginx-picture-path}")
     String nginxPath;
+
     @Autowired
     LostInfoDao lostInfoDao;
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    UserScoreDao userScoreDao;
 
     private Gson g=new Gson();
 
@@ -98,6 +102,8 @@ public class FoundController {
             int holder_id = userDao.getId(openid);
             lostInfo.setHolder_id(holder_id);
             lostInfoDao.addRecord(lostInfo);
+            userScoreDao.addLostNum(openid);
+
         }catch (Exception e){
             e.printStackTrace();
             return "error";

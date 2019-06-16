@@ -18,14 +18,15 @@ public class RequestInfo   implements Serializable {
     private int holder_id;
     private int worker_id;
     private String formId;
-    /*public RequestInfo(String name, String description, int price, String school, String type, Date fintime) {
-        this.setName(name);
-        this.setDescription(description);
-        this.setPrice(price);
-        this.setSchool(school);
-        this.setType(type);
-        this.setFintime(fintime);
-    }*/
+    private double score;
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
 
     public String getFormId() {
         return formId;

@@ -29,4 +29,6 @@ public interface UserDao {
     User getUserById(int holder_id);
 
     List<String> getSchoolList();
+
+    List<User> getAlluser();
 }

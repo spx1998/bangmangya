@@ -9,6 +9,7 @@ import com.xiaoyuanbang.common.domain.MsgResult;
 import com.xiaoyuanbang.common.utils.AESUtil;
 import com.xiaoyuanbang.common.utils.HttpRequest;
 import com.xiaoyuanbang.user.dao.UserDao;
+import com.xiaoyuanbang.user.dao.UserScoreDao;
 import com.xiaoyuanbang.user.domain.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -34,6 +35,8 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private Gson g = new Gson();
 
+    @Autowired
+    UserScoreDao userScoreDao;
     @Autowired
     UserDao userDao;
 
@@ -81,6 +84,7 @@ public class UserController {
         try{
             String openid=AESUtil.decrypt(mysession,AESUtil.KEY);
             userDao.updateUserByOpenid(openid,name,gender,picUrl, USER_CONSTANTS.STATE_SIGNUP);//还需要改变状态！
+            userScoreDao.createUser(openid);
         }catch (Exception e){
             e.printStackTrace();
             return "error";
@@ -94,10 +98,12 @@ public class UserController {
         try{
             String openid=AESUtil.decrypt(mysession,AESUtil.KEY);
             userDao.bindSchool(openid,school,USER_CONSTANTS.STATE_BIND);
+
         }catch (Exception e){
             e.printStackTrace();
             return "error";
         }
+
         logger.info("新用户注册");
         return "ok";
     }

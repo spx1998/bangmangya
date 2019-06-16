@@ -16,7 +16,7 @@ public class OverDueUtil {
     OrderDao orderDao;
 
     private static final Logger logger = LoggerFactory.getLogger(OverDueUtil.class);
-    @Scheduled(cron = "0 10 0 * * ?")
+    @Scheduled(cron = "0 5 0 * * ?")
 //    @Scheduled(fixedRate = 1000)
     public void setOverDue(){
         try{

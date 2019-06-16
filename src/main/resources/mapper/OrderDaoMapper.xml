@@ -27,13 +27,20 @@
     <update id="setOverDue" parameterType="String">
         update request set state =#{param1} where state=#{param2} and to_days(current_date)>to_days(fintime)
     </update>
+    <update id="setRequestScore" parameterType="list">
+        update request
+        <foreach collection="list" separator="," item="request">
+            set score=#{request.score}
+            where holder_id =#{request.holder_id}
+        </foreach>
+    </update>
 
     <select id="getRequestList" parameterType="String" resultMap="RequestInfo">
-        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} order by reqid DESC
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} order by score DESC
     </select>
 
     <select id="getRequestListByType"  resultMap="RequestInfo">
-        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type} order by reqid DESC
+        select reqid, name, type, price, fintime, state, school from request where school=#{school} and state=#{state} and type=#{type} order by score DESC
     </select>
 
     <select id="getRequest" parameterType="int" resultMap="RequestInfo">
@@ -52,10 +59,13 @@
         select type from request where reqid=#{reqid}
     </select>
     <select id="Search" resultMap="RequestInfo">
-        select * from  request where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}' in boolean mode) and school=#{school} and state=#{state} order by reqid DESC;
+        select * from  request where match(name,description) against ('+${s1} >${s2} >${s3} >${s4} >${s5}' in boolean mode) and school=#{school} and state=#{state} order by score DESC;
     </select>
     <select id="getFormId" parameterType="int" resultType="java.lang.String">
         select form_id from request where reqid =#{reqid}
+    </select>
+    <select id="getAllRequest" resultType="com.xiaoyuanbang.order.domain.RequestInfo">
+        select * from request
     </select>
 
 </mapper>

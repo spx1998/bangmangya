@@ -11,7 +11,9 @@ import com.xiaoyuanbang.order.domain.REQUEST_CONSTANT;
 import com.xiaoyuanbang.order.domain.RequestInfo;
 import com.xiaoyuanbang.order.domain.SearchContent;
 import com.xiaoyuanbang.user.dao.UserDao;
+import com.xiaoyuanbang.user.dao.UserScoreDao;
 import com.xiaoyuanbang.user.domain.User;
+import com.xiaoyuanbang.user.domain.UserScoreInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +41,8 @@ public class OrderController {
     @Autowired
     @Qualifier("templateMsgExecutor")
     Executor executor;
+    @Autowired
+    UserScoreDao userScoreDao;
 
     private SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
     private Gson g= new Gson();
@@ -132,6 +136,8 @@ public class OrderController {
             executor.execute(new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId));
 //            TemplateThread templateThread = new TemplateThread(reqid,holder.getOpenid(),user.getUsername(),formId);
 //            templateThread.run();
+            //更新user_score表
+            userScoreDao.addAcceptNum(openid);
         }catch (Exception e){
             e.printStackTrace();
             return "error";
@@ -158,15 +164,17 @@ public class OrderController {
             requestInfo.setFormId(originRequest.getFormId());
                     //new RequestInfo(originRequest.getName(),originRequest.getDescription(),originRequest.getPrice(),originRequest.getSchool(),originRequest.getType(),fintime);
             requestInfo.setFintime(fintime);
-
+            requestInfo.setScore(1);
             String openid = AESUtil.decrypt(mySession, AESUtil.KEY);
             User user=userDao.getUser(openid);
             if(StringUtils.isBlank(user.getWxid())&&StringUtils.isBlank(user.getQqid())&&StringUtils.isBlank(user.getPhone())){
                 return "no contact";
             }
             int userid=user.getId();
-
             orderDao.createRequest(requestInfo.getName(), requestInfo.getDescription(), requestInfo.getFintime(), requestInfo.getSchool(), requestInfo.getType(), requestInfo.getPrice(), userid,requestInfo.getFormId());
+            //更新user_score表
+            userScoreDao.addRequestNum(openid);
+
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();

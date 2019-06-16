@@ -43,5 +43,8 @@
     <select id="getSchoolList" resultType="java.lang.String">
         select name from school ;
     </select>
+    <select id="getAlluser" resultMap="User">
+        select * from user;
+    </select>
 
 </mapper>
