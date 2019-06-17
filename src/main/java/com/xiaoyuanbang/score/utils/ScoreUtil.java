@@ -6,7 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.zip.DataFormatException;
 
 @Component
 public class ScoreUtil {
@@ -47,16 +51,17 @@ public class ScoreUtil {
         double finTimeScore;
         double requestScore;
         int days;
-        Calendar today = Calendar.getInstance();
-        Calendar finTime = Calendar.getInstance();
-        finTime.setTime(requestInfo.getFintime());
+//        Calendar today = Calendar.getInstance();
+//        Calendar finTime = Calendar.getInstance();
+        Temporal today = new Date().toInstant();
+        Temporal finTime = requestInfo.getFintime().toInstant();
         try {
             if(requestInfo.getPrice()>20){
                 priceScore = 1;
             }else {
                 priceScore = Math.sin(((double) requestInfo.getPrice()/(4*20/Math.PI)));
             }
-            if(( days = finTime.get(Calendar.DATE)-today.get(Calendar.DATE))>15){
+            if(( days = (int) ChronoUnit.DAYS.between(today,finTime))>15){
                 finTimeScore = 0;
             }else {
                 finTimeScore = Math.cos(((double) days/(4*15/Math.PI)));
