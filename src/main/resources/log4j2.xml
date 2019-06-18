@@ -52,18 +52,20 @@ fatal： 级别比较高了。重大错误，这种级别你可以直接停止�
             <PatternLayout pattern="${PATTERN}" />
             <SizeBasedTriggeringPolicy size="10MB" />
         </RollingFile>
+        <appender name="MONGODB" class="com.xiaoyuanbang.common.log.MongoDBAppender"/>
     </Appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
     <Loggers>
         <!--建立一个默认的Root的logger，记录大于level高于warn的信息，如果这里的level高于Appenders中的，则Appenders中也是以此等级为起点，比如，这里level="fatal"，则Appenders中只出现fatal信息 -->
         <!-- 生产环境level>=warn -->
-        <Root level="debug">
+        <Root level="info">
             <!-- 输出器,可选上面定义的任何项组合，或全选，做到可随意定制 -->
             <appender-ref ref="ConsoleLog" />
             <appender-ref ref="TestLog" />
             <appender-ref ref="FileLog" />
             <appender-ref ref="RollingFileLog" />
+            <appender-ref ref="MONGODB"/>
         </Root>
         <!-- 第三方日志系统 -->
         <!--过滤掉spring和mybatis的一些无用的DEBUG信息，也可以在spring boot 的logging.level.org.springframework=FATAL设置-->
